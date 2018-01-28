@@ -1,0 +1,42 @@
+version: "3"
+services:
+  blink:
+    image: node:9.4.0-alpine
+    env_file: .env
+    # depends_on: 
+    #   - nginx
+    #   - redis
+    labels:
+      blink.maintainer: "sado.ogie@gmail.com"
+      blink.description: "The blink takeover"
+      blink.version: "1.0"
+    user: node
+    working_dir: /home/node/blink
+    expose:
+      - "3000"
+    volumes:
+      - "./:/home/node/blink"
+      - "storage:/storage"
+    networks: 
+      network:
+        aliases:
+          - blink
+    ports:
+      - "3000:3000"
+    command: ./start.sh
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:3000"]
+    #   interval: 1m30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 40s
+    # logging:
+    #   driver: syslog
+    #   options:
+    #     syslog-address: "tcp://192.168.0.42:123"
+
+networks: 
+  network:
+
+volumes:
+  storage:
