@@ -1,7 +1,11 @@
-version: "3"
+version: "2.2"
+
 services:
+
   blink:
+    container_name: blink_app
     image: node:9.4.0-alpine
+    init: true
     env_file: .env
     # depends_on: 
     #   - nginx
@@ -13,7 +17,7 @@ services:
     user: node
     working_dir: /home/node/blink
     expose:
-      - "3000"
+      - "80"
     volumes:
       - "./:/home/node/blink"
       - "storage:/storage"
@@ -21,11 +25,9 @@ services:
       network:
         aliases:
           - blink
-    ports:
-      - "3000:3000"
     command: ./start.sh
     # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost:3000"]
+    #   test: ["CMD", "curl", "-f", "http://localhost:3080"]
     #   interval: 1m30s
     #   timeout: 10s
     #   retries: 3
@@ -34,6 +36,17 @@ services:
     #   driver: syslog
     #   options:
     #     syslog-address: "tcp://192.168.0.42:123"
+
+  nginx:
+    container_name: blink_nginx
+    image: nginx:1.13.8-alpine
+    ports:
+      - "3080:80"
+    networks: 
+        network:
+    env_file: .env
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
 
 networks: 
   network:
