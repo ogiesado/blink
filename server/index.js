@@ -1,7 +1,8 @@
-const server = require('express')();
+import express from 'express';
+import bootstrap from './bootstrap';
 
-server.get('/', (req, res) => {
-    res.send('Here we go yep yep! ' + process.env.NODE_ENV);
-});
+const server = express();
 
-module.exports = server;
+bootstrap(server);
+
+export default server;
