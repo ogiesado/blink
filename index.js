@@ -1,2 +1,3 @@
+require('babel-polyfill');
 require('babel-register');
-require('./server/start');
+require('./server');

@@ -7,8 +7,8 @@ services:
     image: node:9.4.0-alpine
     init: true
     env_file: .env
-    # depends_on: 
-    #   - redis
+    depends_on: 
+      - redis
     labels:
       blink.maintainer: "sado.ogie@gmail.com"
       blink.description: "The blink takeover"
@@ -16,14 +16,14 @@ services:
     user: node
     working_dir: /home/node/blink
     expose:
-      - "80"
+      - "8080"
     volumes:
       - "./:/home/node/blink"
       - "storage:/storage"
     networks: 
       network:
         aliases:
-          - blink
+          - blink-app #note you can resolve conatainers by their service name like http://blink instead of the alias
     command: ./start.sh
     # healthcheck:
     #   test: ["CMD", "curl", "-f", "http://localhost:3080"]
@@ -39,16 +39,34 @@ services:
   nginx:
     container_name: blink_nginx
     image: nginx:1.13.8-alpine
+    depends_on: 
+      - blink
     ports:
       - "3080:80"
     networks: 
-        network:
+      network:
+        aliases:
+          - blink-nginx
     env_file: .env
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
 
+  redis:
+    container_name: blink_redis
+    image: redis:4.0.7-alpine
+    expose: 
+      - "6379"
+    env_file: .env
+    volumes: 
+      - ./storage/redis:/data:rw
+    networks:
+      network:
+        aliases:
+          - blink-redis
+    command: redis-server --appendonly yes
+
 networks: 
-  network:
+  network: 
 
 volumes:
   storage:

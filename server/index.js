@@ -1,8 +1,10 @@
-import express from 'express';
-import bootstrap from './bootstrap';
+import makeServer from './makeServer';
+import env from './utils/env';
 
-const server = express();
+makeServer().then((server) => {
+    const port = env('NODE_PORT');
+    server.listen(port, () => console.log(`We are listening on port ${port}!`))
+}).catch((error) => {
+    throw error;
+});
 
-bootstrap(server);
-
-export default server;
