@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { connectToRedis } from './utils/redis';
 import { logErrors, errorHandler } from './middlewares/error-handlers';
+import { appPublicStorageDir, appServerViewsDir, appClientBuildDir } from './utils/app';
 
 /**
  * Bootstraps the server
@@ -12,9 +13,14 @@ export default async function bootstrap(server) {
 
     try {
         const redis = await connectToRedis();
-    
-        server.use('/assets', express.static('build'));
-        server.use('/files', express.static(path.join('storage', 'public')));
+        
+        server.set('trust proxy', true);
+
+        server.set('views', appServerViewsDir());
+        server.set('view engine', 'ejs');
+
+        server.use('/assets', express.static(appClientBuildDir()));
+        server.use('/files', express.static(appPublicStorageDir()));
             
         server.get('/', (req, res) => {
             redis.incr('count').then(count => {
