@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { connectToRedis } from './utils/redis';
+import { logErrors, errorHandler } from './middlewares/error-handlers';
 
 /**
  * Bootstraps the server
@@ -26,19 +27,18 @@ export default async function bootstrap(server) {
             });
         });
 
-        const db = {
-            stop(callback) {
-                console.log('shutting down db...');
-                callback(null);
-            }
-        };
+        server.use(logErrors);
+        server.use(errorHandler);
     
         process.on('SIGINT', function () {
-            redis.disconnect();
-            db.stop(function (err) {
-                process.exit(err ? 1 : 0);
-            });
+            try {
+                redis.disconnect();
+                process.exit(0);
+            } catch (error) {
+                process.exit(1);
+            }
         });
+
     } catch (error) {
         throw error;
     }
