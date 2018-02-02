@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import helmet from 'helmet';
 import { connectToRedis } from './utils/redis';
 import { logErrors, errorHandler } from './middlewares/error-handlers';
 import { appPublicStorageDir, appServerViewsDir, appClientBuildDir } from './utils/app';
@@ -15,6 +16,8 @@ export default async function bootstrap(server) {
         const redis = await connectToRedis();
         
         server.set('trust proxy', true);
+        server.disable('x-powered-by');
+        server.use(helmet());
 
         server.set('views', appServerViewsDir());
         server.set('view engine', 'ejs');
@@ -24,11 +27,7 @@ export default async function bootstrap(server) {
             
         server.get('/', (req, res) => {
             redis.incr('count').then(count => {
-                res.send(`
-                    Hope is not a strategy.  A solid plan is... for sure
-                    You decide.
-                    Count: ${count}
-                `);
+                res.render('index', { count });
 
             });
         });
