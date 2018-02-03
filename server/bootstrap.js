@@ -4,6 +4,12 @@ import helmet from 'helmet';
 import { connectToRedis } from './utils/redis';
 import { logErrors, errorHandler } from './middlewares/error-handlers';
 import { appPublicStorageDir, appServerViewsDir, appClientBuildDir } from './utils/app';
+import { 
+    json as jsonParser,
+    urlencoded as urlencodedParser,
+    text as textParser,
+    raw as rawParser, 
+} from 'body-parser';
 
 /**
  * Bootstraps the server
@@ -17,7 +23,12 @@ export default async function bootstrap(server) {
         
         server.set('trust proxy', true);
         server.disable('x-powered-by');
+
         server.use(helmet());
+        server.use(jsonParser());
+        server.use(urlencodedParser());
+        server.use(textParser());
+        server.use(rawParser());
 
         server.set('views', appServerViewsDir());
         server.set('view engine', 'ejs');
