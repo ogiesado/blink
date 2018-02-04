@@ -5,7 +5,10 @@ apt-get update && apt-get upgrade -y
 
 #INSTALL GIT
 apt-get install -y git
-#set git user
+
+git config --global user.name "Ogie Sado"
+
+git config --global user.email "ogie.sado@gmail.com"
 
 #INSTALL DOCKER
 
