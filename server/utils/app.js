@@ -6,11 +6,11 @@ import path from 'path';
  * @return {String} The directory path
  */
 export function appDir(...appPath) {
-    if (appPath.length === 0) {
-        return process.cwd();
-    }
+  if (appPath.length === 0) {
+    return process.cwd();
+  }
 
-    return path.join(appDir(), ...appPath);
+  return path.join(appDir(), ...appPath);
 }
 
 /**
@@ -19,7 +19,7 @@ export function appDir(...appPath) {
  * @return {String} The directory path
  */
 export function appServerDir(...appPath) {
-    return appDir('server', ...appPath);
+  return appDir('server', ...appPath);
 }
 
 /**
@@ -28,7 +28,7 @@ export function appServerDir(...appPath) {
  * @return {String} The directory path
  */
 export function appServerViewsDir(...appPath) {
-    return appServerDir('views', ...appPath);
+  return appServerDir('views', ...appPath);
 }
 
 /**
@@ -37,7 +37,7 @@ export function appServerViewsDir(...appPath) {
  * @return {String} The directory path
  */
 export function appStorageDir(...appPath) {
-    return appDir('storage', ...appPath);
+  return appDir('storage', ...appPath);
 }
 
 /**
@@ -45,7 +45,7 @@ export function appStorageDir(...appPath) {
  * @return {String} The directory path
  */
 export function appPublicStorageDir() {
-    return appStorageDir('public');
+  return appStorageDir('public');
 }
 
 /**
@@ -54,7 +54,7 @@ export function appPublicStorageDir() {
  * @return {String} The directory path
  */
 export function appClientDir(...appPath) {
-    return appDir('client', ...appPath);
+  return appDir('client', ...appPath);
 }
 
 /**
@@ -63,5 +63,5 @@ export function appClientDir(...appPath) {
  * @return {String} The directory path
  */
 export function appClientBuildDir() {
-    return appClientDir('build');
+  return appClientDir('build');
 }

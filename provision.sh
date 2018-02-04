@@ -1,6 +1,11 @@
 #!/bin/bash
+#SCRIPT TO PROVSION THE DOCKER HOST SERVER
 
 apt-get update && apt-get upgrade -y
+
+#INSTALL GIT
+apt-get install -y git
+#set git user
 
 #INSTALL DOCKER
 

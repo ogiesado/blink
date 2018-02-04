@@ -6,14 +6,13 @@ import bootstrap from './bootstrap';
  * @return {Promise} A promise resolved with created server
  */
 export default async function makeServer() {
-    
-    const server = express();
+  const server = express();
 
-    try {
-        await bootstrap(server);
-    } catch (error) {
-        throw error;
-    }
+  try {
+    await bootstrap(server);
+  } catch (error) {
+    throw error;
+  }
 
-    return server;
+  return server;
 }

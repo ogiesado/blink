@@ -5,9 +5,9 @@
  * @return {String} The environment varibal value
  */
 export default function env(key, defaultValue = null) {
-    if (process.env[key]) {
-        return process.env[key];
-    } else {
-        return defaultValue;
-    }
+  if (process.env[key]) {
+    return process.env[key];
+  } else {
+    return defaultValue;
+  }
 }

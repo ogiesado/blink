@@ -13,33 +13,32 @@ let client = null;
  * @return {Promise} A promise that resolve with the redis client
  */
 export async function connectToRedis({
-    host = env('REDIS_HOST'),
-    port = env('REDIS_PORT'),
-    ...rest
+  host = env('REDIS_HOST'),
+  port = env('REDIS_PORT'),
+  ...rest
 } = {}) {
+  if (client !== null) {
+    return Promise.resolve(client);
+  }
 
-    if (client !== null) {
-        return Promise.resolve(client);
-    }
+  const options = {
+    host,
+    port,
+    ...rest,
+  };
 
-    const options = {
-        host,
-        port,
-        ...rest,
-    }
+  return new Promise((resolve, reject) => {
+    const redis = new Redis(options);
 
-    return new Promise((resolve, reject) => {
-        const redis = new Redis(options);
-
-        redis.on('connect', () => {
-            client = redis;
-            resolve(client);
-        });
-
-        redis.on('error', (error) => {
-            reject(error);
-        });
+    redis.on('connect', () => {
+      client = redis;
+      resolve(client);
     });
+
+    redis.on('error', error => {
+      reject(error);
+    });
+  });
 }
 
 /**
@@ -48,9 +47,9 @@ export async function connectToRedis({
  * @throws {Error} If the redis client is not connected
  */
 export function getRedisClient() {
-    if (client === null) {
-        throw new Error('Redis is not connected!');
-    }
+  if (client === null) {
+    throw new Error('Redis is not connected!');
+  }
 
-    return client;
+  return client;
 }

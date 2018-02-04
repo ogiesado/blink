@@ -7,8 +7,8 @@
  * @return {void}
  */
 export function logErrors(err, req, res, next) {
-    console.error(err.stack);
-    next(err);
+  console.error(err.stack);
+  next(err);
 }
 
 /**
@@ -20,14 +20,16 @@ export function logErrors(err, req, res, next) {
  * @return {void}
  */
 export function errorHandler(err, req, res, next) {
-    res.status(500);
+  res.status(500);
 
-    const data = { message: 'Internal Server Error' };
-    const expectsJson = true;
+  const data = {
+    message: 'Internal Server Error',
+  };
+  const expectsJson = true;
 
-    if (expectsJson) {
-        res.json(data);
-    } else {
-        res.render('error', data);
-    }
+  if (expectsJson) {
+    res.json(data);
+  } else {
+    res.render('error', data);
+  }
 }
