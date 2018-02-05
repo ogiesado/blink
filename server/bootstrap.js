@@ -13,6 +13,7 @@ import {
   text as textParser,
   raw as rawParser,
 } from 'body-parser';
+import configureRoutes from './configureRoutes';
 
 /**
  * Bootstraps the server
@@ -38,11 +39,7 @@ export default (async function bootstrap(server) {
     server.use('/assets', express.static(appClientBuildDir()));
     server.use('/files', express.static(appPublicStorageDir()));
 
-    server.get('/', (req, res) => {
-      redis.incr('count').then(count => {
-        res.render('index', { count });
-      });
-    });
+    configureRoutes(server);
 
     server.use(logErrors);
     server.use(errorHandler);

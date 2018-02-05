@@ -18,9 +18,7 @@ fi
 
 echo -e "\e[32m Starting '$ENV' deployment...";
 
-echo -e "\e[32m Sourcing nvm...";
 . ~/.nvm/nvm.sh
-echo -e "\e[32m Done.";
 
 #if production pull git master or release tag, add git install to provision server
 
