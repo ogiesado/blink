@@ -1,5 +1,9 @@
-import './index.scss';
+import { render } from 'react-dom';
+import React from 'react';
+import { APP_CSS_ID } from './constants';
+import Blink from './blink/Blink.jsx';
+import './styles/index.scss';
 
-const root = document.getElementById('blink-app');
+const appRoot = document.getElementById(APP_CSS_ID);
 
-root.appendChild(document.createTextNode('Blink app'));
+render(<Blink />, appRoot);

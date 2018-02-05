@@ -1,7 +1,11 @@
 import express from 'express';
 import helmet from 'helmet';
 import { connectToRedis } from './utils/redis';
-import { logErrors, errorHandler } from './middlewares/error-handlers';
+import {
+  logErrors,
+  errorHandler,
+  notFoundHandler,
+} from './middlewares/error-handlers';
 import {
   appPublicStorageDir,
   appServerViewsDir,
@@ -43,6 +47,7 @@ export default (async function bootstrap(server) {
 
     server.use(logErrors);
     server.use(errorHandler);
+    server.use(notFoundHandler);
 
     process.on('SIGINT', function() {
       try {

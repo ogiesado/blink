@@ -12,7 +12,7 @@ export function logErrors(err, req, res, next) {
 }
 
 /**
- * Handles ajax requests
+ * Handles errors in requests
  * @param {Error} err The error object
  * @param {Request} req The request object
  * @param {Response} res The response object
@@ -32,4 +32,15 @@ export function errorHandler(err, req, res, next) {
   } else {
     res.render('error', data);
   }
+}
+
+/**
+ * Handles 404 requests
+ * @param {Request} req The request object
+ * @param {Response} res The response object
+ * @param {Function} next Funtion to call to continue the request
+ * @return {void}
+ */
+export function notFoundHandler(req, res, next) {
+  res.render('index');
 }
