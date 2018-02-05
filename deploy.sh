@@ -1,4 +1,7 @@
 #!/bin/bash
+echo "Hope is not a strategy. A solid plan is.";
+
+NPM_ENV=""
 
 if [ "$1" = 'd' ] || [ "$1" = 'dev' ] || [ "$1" = 'development' ]; then
   ENV=development
@@ -7,6 +10,7 @@ elif [ "$1" = 'p' ] || [ "$1" = 'prod' ] || [ "$1" = 'production' ]; then
   read answer
   if echo "$answer" | grep -iq "^y" ; then
       ENV=production
+      NPM_ENV="--production"
   else
       echo -e "\e[33m Deployment cancelled.";
       exit 0;
@@ -20,10 +24,21 @@ echo -e "\e[32m Starting '$ENV' deployment...";
 
 . ~/.nvm/nvm.sh
 
-#if production pull git master or release tag, add git install to provision server
+#if production pull git master or release tag
+if [ "$ENV" = "production" ]; then
+  git stash
+  git checkout master
+  git pull origin
+fi
 
-npm install --no-optional
+npm install "$NPM_ENV"
 
 docker-compose stop
 docker-compose build
 docker-compose up -d
+
+if [ "$ENV" = "development" ]; then
+  npx webpack --watch
+else
+  npx webpack -p
+fi
