@@ -20,7 +20,7 @@ else
   exit 1;
 fi
 
-echo -e "\e[32m Starting '$ENV' deployment...";
+echo -e "\e[32m Deploying $ENV...";
 
 . ~/.nvm/nvm.sh
 
