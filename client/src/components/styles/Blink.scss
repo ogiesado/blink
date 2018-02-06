@@ -6,4 +6,10 @@
   @media (max-width: 1000px) {
     max-width: 95%;
   }
+
+  &__main {
+    min-height: 85vh;
+    margin: 15px 0 !important;
+  }
 }
+

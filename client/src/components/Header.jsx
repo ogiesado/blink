@@ -21,7 +21,7 @@ export default function Header() {
             entities
           </Link>
           <span className="b-header__nav-divider">|</span>
-          <Link to="uploadxxx" className="b-header__nav-item">
+          <Link to="signout" className="b-header__nav-item">
             sign out
           </Link>
           <span className="b-header__nav-divider">|</span>
