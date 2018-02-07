@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import './styles/Header.scss';
 
-export default function Header() {
+const Header = function({ showNavigation }) {
   return (
     <header className="b-header">
       <div className="b-header__right">
@@ -12,25 +13,35 @@ export default function Header() {
         <span className="b-header__description">LEI Finder</span>
       </div>
       <div className="b-header__left">
-        <nav className="b-header__nav">
-          <Link to="upload" className="b-header__nav-item">
-            upload
-          </Link>
-          <span className="b-header__nav-divider">|</span>
-          <Link to="entities" className="b-header__nav-item">
-            entities
-          </Link>
-          <span className="b-header__nav-divider">|</span>
-          <Link to="signout" className="b-header__nav-item">
-            sign out
-          </Link>
-          <span className="b-header__nav-divider">|</span>
-          <span className="b-header__workspace">
-            workspace:{' '}
-            <span className="b-header__workspace-id">sado.ogie@gmail.com</span>
-          </span>
-        </nav>
+        {showNavigation && (
+          <nav className="b-header__nav">
+            <Link to="upload" className="b-header__nav-item">
+              upload
+            </Link>
+            <span className="b-header__nav-divider">|</span>
+            <Link to="entities" className="b-header__nav-item">
+              entities
+            </Link>
+            <span className="b-header__nav-divider">|</span>
+            <Link to="signout" className="b-header__nav-item">
+              sign out
+            </Link>
+            <span className="b-header__nav-divider">|</span>
+            <span className="b-header__workspace">
+              workspace:{' '}
+              <span className="b-header__workspace-id">
+                sado.ogie@gmail.com
+              </span>
+            </span>
+          </nav>
+        )}
       </div>
     </header>
   );
-}
+};
+
+Header.propTypes = {
+  showNavigation: PropTypes.bool.isRequired,
+};
+
+export default Header;
