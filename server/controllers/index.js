@@ -1,9 +1,5 @@
-import { getRedisClient } from '../utils/redis';
+import { respondWithView } from '../utils/responses';
 
 export function index(req, res) {
-  const redis = getRedisClient();
-
-  redis.incr('count').then(count => {
-    res.render('index', { count });
-  });
+  respondWithView(res, 'index');
 }
