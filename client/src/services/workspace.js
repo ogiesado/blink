@@ -1,4 +1,4 @@
-import { get } from './http';
+import { post } from './http';
 import { API_VERSION } from './constants';
 
 /**
@@ -17,24 +17,10 @@ export function getWorkSpaceKey() {
   return window.localStorage.getItem('blink:workspace:key');
 }
 
-/**
- * Verifies the workspace key
- * @param {String} key The workspace key
- * @return {Promise} The request promise
- */
-export function verifyWorkSpaceKey(key) {
-  return get(`${API_VERSION}/workspace/${key}`)
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
+export function setWorkSpaceId(id) {
+  return post(`${API_VERSION}/workspaces`, { id }).then(({ id, key }) => {
+    // window.localStorage.setItem('blink:workspace:key', id);
 
-      throw new Error(
-        'Could not verify your workspace. Please refresh the page.'
-      );
-    })
-    .catch(error => {
-      console.log(error.message);
-      throw new Error(`Error: ${error.message}`);
-    });
+    return { id, key };
+  });
 }

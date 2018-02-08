@@ -1,18 +1,18 @@
 import { hasWorkspaceKey, getWorkSpaceKey } from './workspace';
 
 /**
- * Cnfigures the header
- * @param {Header} [header] Optional header obejct
- * @return {Header} The configured header oject
+ * Cnfigures the headers
+ * @param {Headers} [headers] Optional headers obejct
+ * @return {Headers} The configured headers oject
  */
-function configureHeader(header = new window.Headers()) {
-  header.append('Content-Type', 'application/json');
-  header.append('Accept', 'application/json');
+function configureHeaders(headers = new window.Headers()) {
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
   if (hasWorkspaceKey()) {
-    header.append('Blink-Workspace-Key', getWorkSpaceKey());
+    headers.append('Blink-Workspace-Key', getWorkSpaceKey());
   }
 
-  return header;
+  return headers;
 }
 /**
  * Makes a GET request using fetch
@@ -21,7 +21,27 @@ function configureHeader(header = new window.Headers()) {
  * @return {Promise} Returns a promise for the request
  */
 export function get(url, options = {}) {
-  options.header = configureHeader(options.header);
+  options.headers = configureHeaders(options.headers);
 
   return fetch(url, { ...options, method: 'GET' });
+}
+
+export function post(url, data = null, options = {}) {
+  options.headers = configureHeaders(options.headers);
+
+  if (data) {
+    options.body = window.JSON.stringify(data);
+  }
+
+  return fetch(url, { ...options, method: 'POST' })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+
+      throw new Error(`Request error: ${response.statusText}`);
+    })
+    .catch(error => {
+      throw error;
+    });
 }

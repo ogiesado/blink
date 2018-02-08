@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import './styles/Header.scss';
 
-const Header = function({ showNavigation }) {
+const Header = function({ showNavigation, workspaceId }) {
   return (
     <header className="b-header">
       <div className="b-header__right">
@@ -29,9 +29,7 @@ const Header = function({ showNavigation }) {
             <span className="b-header__nav-divider">|</span>
             <span className="b-header__workspace">
               workspace:{' '}
-              <span className="b-header__workspace-id">
-                sado.ogie@gmail.com
-              </span>
+              <span className="b-header__workspace-id">{workspaceId}</span>
             </span>
           </nav>
         )}
@@ -41,6 +39,7 @@ const Header = function({ showNavigation }) {
 };
 
 Header.propTypes = {
+  workspaceId: PropTypes.string,
   showNavigation: PropTypes.bool.isRequired,
 };
 

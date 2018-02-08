@@ -1,12 +1,12 @@
 import crypto from 'crypto';
-import env from '../utils/env';
-import { getRedisClient } from '../utils/redis';
+import env from '../../../utils/env';
+import { getRedisClient } from '../../../utils/redis';
 import {
   respondServerError,
   respondOk,
   respondBadRequest,
-} from '../utils/responses';
-import { isValidWorkspaceId } from '../../shared/utils';
+} from '../../../utils/responses';
+import { isValidWorkspaceId } from '../../../../shared/utils';
 
 export function createWorkpace(req, res) {
   const id = req.body.id;
@@ -22,6 +22,6 @@ export function createWorkpace(req, res) {
 
   getRedisClient()
     .hset('WORKSPACE', key, id)
-    .then(() => respondOk(res, { id, key }))
+    .then(() => respondOk(res, { id, key, b: req.body }))
     .catch(error => respondServerError(res, error.message));
 }

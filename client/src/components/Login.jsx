@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { isValidWorkspaceId } from '../../../shared/utils';
-import { hasWorkspaceKey } from '../services/workspace';
+import { hasWorkspaceKey, setWorkSpaceId } from '../services/workspace';
 import './styles/Login.scss';
 
 export default class Login extends Component {
@@ -16,10 +17,14 @@ export default class Login extends Component {
     };
   }
 
-  login = e => {
-    e.preventDefault();
+  static propTypes = {
+    workspaceSet: PropTypes.func.isRequired,
+  };
 
+  login = e => {
     const { disabled, workspaceId } = this.state;
+
+    e.preventDefault();
 
     if (disabled || !isValidWorkspaceId(workspaceId)) {
       return;
@@ -31,9 +36,15 @@ export default class Login extends Component {
 
     this.setState({ disabled: true });
 
-    setTimeout(() => this.setState({ disabled: false }), 3000);
-
-    console.log('login', workspaceId);
+    setWorkSpaceId(workspaceId)
+      .then(({ id, key }) => {
+        console.log(id, key);
+        this.props.workspaceSet({ id, key });
+      })
+      .catch(error => {
+        this.setState({ disabled: false });
+        throw error;
+      });
   };
 
   handleChange = e => {
@@ -49,6 +60,11 @@ export default class Login extends Component {
         onApprove: () => this.login(),
       })
       .modal('show');
+  }
+
+  componentWillUnmount() {
+    this.el.modal('hide');
+    this.el.remove();
   }
 
   render() {

@@ -37,6 +37,16 @@ export default class Blink extends Component {
     this.setState({ message });
   };
 
+  onWorkspaceSet = ({ id }) => {
+    console.log('on workspace set');
+    this.setState({
+      workspaceVerified: true,
+      workspaceId: id,
+      loginRequired: false,
+      showLoading: false,
+    });
+  };
+
   componentDidMount() {
     hasWorkspaceKey();
     getWorkSpaceKey();
@@ -50,14 +60,18 @@ export default class Blink extends Component {
       showLoading,
       message,
       loginRequired,
+      workspaceId,
     } = this.state;
     return (
       <Router>
         <div className="b-app">
-          <Header showNavigation={workspaceVerified} />
+          <Header
+            showNavigation={workspaceVerified}
+            workspaceId={workspaceId}
+          />
           <div className="b-app__main ui piled segment">
             {loginRequired ? (
-              <Login />
+              <Login workspaceSet={this.onWorkspaceSet} />
             ) : showLoading ? (
               <Loading className="b-app__loading" message={message} />
             ) : (

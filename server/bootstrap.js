@@ -33,7 +33,7 @@ export default (async function bootstrap(server) {
 
     server.use(helmet());
     server.use(jsonParser());
-    server.use(urlencodedParser());
+    server.use(urlencodedParser({ extended: true }));
     server.use(textParser());
     server.use(rawParser());
 
