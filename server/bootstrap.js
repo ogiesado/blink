@@ -2,11 +2,6 @@ import express from 'express';
 import helmet from 'helmet';
 import { connectToRedis } from './utils/redis';
 import {
-  logErrors,
-  errorHandler,
-  notFoundHandler,
-} from './middlewares/error-handlers';
-import {
   appPublicStorageDir,
   appServerViewsDir,
   appClientBuildDir,
@@ -18,6 +13,9 @@ import {
   raw as rawParser,
 } from 'body-parser';
 import configureRoutes from './configureRoutes';
+import handleNotFound from './middlewares/handleNotFound';
+import handleErrors from './middlewares/handleErrors';
+import logErrors from './middlewares/logErrors';
 
 /**
  * Bootstraps the server
@@ -46,8 +44,8 @@ export default (async function bootstrap(server) {
     configureRoutes(server);
 
     server.use(logErrors);
-    server.use(errorHandler);
-    server.use(notFoundHandler);
+    server.use(handleErrors);
+    server.use(handleNotFound);
 
     process.on('SIGINT', function() {
       try {

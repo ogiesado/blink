@@ -9,7 +9,7 @@ import {
 } from '../../../utils/http-responses';
 import { isValidWorkspaceId } from '../../../../shared/utils';
 
-const REDIS_WORKSPACE_KEY = 'BLINK:WORKSPACE';
+const REDIS_WORKSPACE_KEY = 'BLINK:WORKSPACE:';
 
 export function createWorkpace(req, res) {
   const id = req.body.id;
@@ -24,7 +24,7 @@ export function createWorkpace(req, res) {
     .digest('hex');
 
   getRedisClient()
-    .set(`${REDIS_WORKSPACE_KEY}.${key}`, id, 'EX', 2 * 60)
+    .set(`${REDIS_WORKSPACE_KEY}${key}`, id, 'EX', 2 * 60)
     .then(() => respondOk(res, { id, key }))
     .catch(error => respondServerError(res, error.message));
 }
@@ -32,7 +32,7 @@ export function createWorkpace(req, res) {
 export function verifyWorkspaceKey(req, res) {
   const key = req.params.key;
   getRedisClient()
-    .get(`${REDIS_WORKSPACE_KEY}.${key}`)
+    .get(`${REDIS_WORKSPACE_KEY}${key}`)
     .then(id => {
       if (id === null) {
         return respondNotFound(res, 'Workspace not found.');
