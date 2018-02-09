@@ -27,11 +27,14 @@
   &__nav {
     display: flex;
     justify-content: space-around;
-    width: 400px;
     align-items: center;
   }
 
   &__workspace-id {
     color: #767676;
+  }
+
+  &__nav-divider {
+    padding: 0 10px;
   }
 }

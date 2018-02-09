@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Segment } from 'semantic-ui-react';
 import Header from './Header.jsx';
 import Home from './Home.jsx';
 import Upload from './Upload.jsx';
@@ -11,9 +12,10 @@ import WorkspaceRoute from './WorkspaceRoute.jsx';
 import Loading from './Loading.jsx';
 import Login from './Login.jsx';
 import {
+  verifyWorkspaceKey,
+  removeWorkspaceKey,
   hasWorkspaceKey,
-  getWorkSpaceKey,
-  // verifyWorkSpaceKey,
+  getWorkspaceKey,
 } from '../services/workspace';
 import './styles/Blink.scss';
 
@@ -38,7 +40,6 @@ export default class Blink extends Component {
   };
 
   onWorkspaceSet = ({ id }) => {
-    console.log('on workspace set');
     this.setState({
       workspaceVerified: true,
       workspaceId: id,
@@ -48,10 +49,17 @@ export default class Blink extends Component {
   };
 
   componentDidMount() {
-    hasWorkspaceKey();
-    getWorkSpaceKey();
-    // verifyWorkSpaceKey();
-    // this.checkWorkspace().then(verifyWorkSpaceKey);
+    const { loginRequired, workspaceVerified } = this.state;
+
+    if (!loginRequired && !workspaceVerified) {
+      verifyWorkspaceKey(getWorkspaceKey())
+        .then(this.onWorkspaceSet)
+        .catch(error => {
+          removeWorkspaceKey();
+          window.location.reload(true);
+          throw error;
+        });
+    }
   }
 
   render() {
@@ -69,7 +77,7 @@ export default class Blink extends Component {
             showNavigation={workspaceVerified}
             workspaceId={workspaceId}
           />
-          <div className="b-app__main ui piled segment">
+          <Segment className="b-app__main" piled>
             {loginRequired ? (
               <Login workspaceSet={this.onWorkspaceSet} />
             ) : showLoading ? (
@@ -82,7 +90,7 @@ export default class Blink extends Component {
                 <Route component={NotFound} />
               </Switch>
             )}
-          </div>
+          </Segment>
           <Footer />
         </div>
       </Router>

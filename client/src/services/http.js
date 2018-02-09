@@ -1,4 +1,4 @@
-import { hasWorkspaceKey, getWorkSpaceKey } from './workspace';
+import { hasWorkspaceKey, getWorkspaceKey } from './workspace';
 
 /**
  * Cnfigures the headers
@@ -9,7 +9,7 @@ function configureHeaders(headers = new window.Headers()) {
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
   if (hasWorkspaceKey()) {
-    headers.append('Blink-Workspace-Key', getWorkSpaceKey());
+    headers.append('Blink-Workspace-Key', getWorkspaceKey());
   }
 
   return headers;
@@ -20,28 +20,44 @@ function configureHeaders(headers = new window.Headers()) {
  * @param {Object} options The fetch options
  * @return {Promise} Returns a promise for the request
  */
-export function get(url, options = {}) {
-  options.headers = configureHeaders(options.headers);
+export async function get(url, options = {}) {
+  try {
+    options.headers = configureHeaders(options.headers);
 
-  return fetch(url, { ...options, method: 'GET' });
+    const response = await fetch(url, { ...options, method: 'GET' });
+    const data = await response.json();
+
+    if (response.ok) {
+      return data;
+    }
+
+    throw new Error(data.message);
+  } catch (e) {
+    throw e;
+  }
 }
 
-export function post(url, data = null, options = {}) {
-  options.headers = configureHeaders(options.headers);
-
+export async function post(url, data = null, options = {}) {
   if (data) {
-    options.body = window.JSON.stringify(data);
+    try {
+      options.body = window.JSON.stringify(data);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  return fetch(url, { ...options, method: 'POST' })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
+  try {
+    options.headers = configureHeaders(options.headers);
 
-      throw new Error(`Request error: ${response.statusText}`);
-    })
-    .catch(error => {
-      throw error;
-    });
+    const response = await fetch(url, { ...options, method: 'POST' });
+    const data = await response.json();
+
+    if (response.ok) {
+      return data;
+    }
+
+    throw new Error(data.message);
+  } catch (e) {
+    throw e;
+  }
 }

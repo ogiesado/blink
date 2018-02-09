@@ -7,7 +7,7 @@ export function respondBadRequest(res, message = 'Bad Request') {
 }
 
 export function respondNotFound(res, message = 'Not Found') {
-  res.status(400).json({ message });
+  res.status(404).json({ message });
 }
 
 export function respondServerError(res, message = 'Server Error') {
