@@ -30,6 +30,10 @@
     align-items: center;
   }
 
+  &__nav-item {
+    cursor: pointer;
+  }
+
   &__workspace-id {
     color: #767676;
   }

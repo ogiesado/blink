@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Icon } from 'semantic-ui-react';
 import './styles/Header.scss';
 
-const Header = function({ showNavigation, workspaceId }) {
+const Header = function({ showNavigation, workspaceId, logout }) {
   return (
     <header className="b-header">
       <div className="b-header__right">
@@ -31,15 +31,15 @@ const Header = function({ showNavigation, workspaceId }) {
               upload
             </Link>
             <span className="b-header__nav-divider">|</span>
-            <Link to="upload" className="b-header__nav-item">
+            <Link to="update" className="b-header__nav-item">
               <Icon size="small" name="refresh" color="blue" />
               update
             </Link>
             <span className="b-header__nav-divider">|</span>
-            <Link to="signout" className="b-header__nav-item">
+            <a onClick={logout} className="b-header__nav-item">
               <Icon size="small" name="sign out" color="blue" />
               exit
-            </Link>
+            </a>
           </nav>
         )}
       </div>
@@ -48,6 +48,7 @@ const Header = function({ showNavigation, workspaceId }) {
 };
 
 Header.propTypes = {
+  logout: PropTypes.func.isRequired,
   workspaceId: PropTypes.string,
   showNavigation: PropTypes.bool.isRequired,
 };

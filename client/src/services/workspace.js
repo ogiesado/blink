@@ -1,4 +1,4 @@
-import { post, get } from './http';
+import { post, get, del } from './http';
 import { API_VERSION } from './constants';
 
 const WORKSPACE_KEY = 'blink:workspace:key';
@@ -33,4 +33,8 @@ export async function setWorkspaceId(id) {
 
 export async function verifyWorkspaceKey(key) {
   return get(`${API_VERSION}/workspaces/${key}`);
+}
+
+export async function exitWorkspaceKey(key) {
+  return del(`${API_VERSION}/workspaces/${key}`);
 }

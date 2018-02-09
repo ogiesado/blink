@@ -61,3 +61,20 @@ export async function post(url, data = null, options = {}) {
     throw e;
   }
 }
+
+export async function del(url, options = {}) {
+  try {
+    options.headers = configureHeaders(options.headers);
+
+    const response = await fetch(url, { ...options, method: 'DELETE' });
+    const data = await response.json();
+
+    if (response.ok) {
+      return data;
+    }
+
+    throw new Error(data.message);
+  } catch (e) {
+    throw e;
+  }
+}
