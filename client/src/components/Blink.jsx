@@ -5,7 +5,7 @@ import { Segment } from 'semantic-ui-react';
 import Header from './Header.jsx';
 import Home from './Home.jsx';
 import Upload from './Upload.jsx';
-import Update from './Update.jsx';
+import Update from './update/Update.jsx';
 import Entities from './Entities.jsx';
 import NotFound from './NotFound.jsx';
 import Footer from './Footer.jsx';
@@ -17,7 +17,7 @@ import {
   removeWorkspaceKey,
   hasWorkspaceKey,
   getWorkspaceKey,
-  exitWorkspaceKey,
+  exitWorkspace,
 } from '../services/workspace';
 import './styles/Blink.scss';
 
@@ -57,7 +57,7 @@ export default class Blink extends Component {
       return;
     }
 
-    exitWorkspaceKey(getWorkspaceKey())
+    exitWorkspace(getWorkspaceKey())
       .then(() => {
         removeWorkspaceKey();
         window.location.reload(true);
@@ -104,9 +104,9 @@ export default class Blink extends Component {
               <Loading className="b-app__loading" message={message} />
             ) : (
               <Switch>
-                <Route exact path="/" component={Home} />
-                <Route path="/upload" component={Upload} />
-                <Route path="/update" component={Update} />
+                <WorkspaceRoute exact path="/" component={Home} />
+                <WorkspaceRoute path="/upload" component={Upload} />
+                <WorkspaceRoute path="/update" component={Update} />
                 <WorkspaceRoute path="/entities" component={Entities} />
                 <Route component={NotFound} />
               </Switch>
