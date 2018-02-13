@@ -1,7 +1,7 @@
 import { post, get, del } from './http';
 import { API_VERSION } from './constants';
 
-const WORKSPACE_KEY = 'blink:workspace:key';
+const LS_WORKSPACE_KEY = 'blink:workspace:key';
 
 /**
  * Checks if there is a workspace key
@@ -16,25 +16,25 @@ export function hasWorkspaceKey() {
  * @return {String} The workspace key
  */
 export function getWorkspaceKey() {
-  return window.localStorage.getItem(WORKSPACE_KEY);
+  return window.localStorage.getItem(LS_WORKSPACE_KEY);
 }
 
 export function removeWorkspaceKey() {
-  window.localStorage.removeItem(WORKSPACE_KEY);
+  window.localStorage.removeItem(LS_WORKSPACE_KEY);
 }
 
-export async function setWorkspaceId(id) {
+export function setWorkspaceId(id) {
   return post(`${API_VERSION}/workspaces`, { id }).then(({ id, key }) => {
-    window.localStorage.setItem(WORKSPACE_KEY, key);
+    window.localStorage.setItem(LS_WORKSPACE_KEY, key);
 
     return { id, key };
   });
 }
 
-export async function verifyWorkspaceKey(key) {
+export function verifyWorkspaceKey(key) {
   return get(`${API_VERSION}/workspaces/${key}`);
 }
 
-export async function exitWorkspace(key) {
+export function exitWorkspace(key) {
   return del(`${API_VERSION}/workspaces/${key}`);
 }

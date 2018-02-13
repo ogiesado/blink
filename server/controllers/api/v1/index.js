@@ -4,7 +4,6 @@ import {
   verifyWorkspaceKey,
   deleteWorkspaceKey,
 } from './workspaces';
-
 import { getUpdateDetails } from './updates';
 
 const api = Router();
