@@ -1,6 +1,9 @@
 import Redis from 'ioredis';
 import env from './env';
 
+export const REDIS_UPDATE_DETAILS_KEY = 'BLINK:UPDATE:DETAILS';
+export const REDIS_WORKSPACE_KEY_PREFIX = 'BLINK:WORKSPACE:';
+export const REDIS_WORKSPACE_EXPIRY = 60 * 60;
 /**
  * The connected redis client
  * @type {RedisClient}
@@ -52,4 +55,20 @@ export function getRedisClient() {
   }
 
   return client;
+}
+
+export async function prepareRedis(redis) {
+  try {
+    const hasUpdateDetailsKey = await redis.exists(REDIS_UPDATE_DETAILS_KEY);
+
+    if (!hasUpdateDetailsKey) {
+      await redis.hmset(REDIS_UPDATE_DETAILS_KEY, {
+        lastUpdate: '-',
+        totalRecords: 0,
+        lastUpdateBy: '-',
+      });
+    }
+  } catch (error) {
+    throw error;
+  }
 }

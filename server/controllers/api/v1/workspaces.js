@@ -1,6 +1,10 @@
 import crypto from 'crypto';
 import env from '../../../utils/env';
-import { getRedisClient } from '../../../utils/redis';
+import {
+  getRedisClient,
+  REDIS_WORKSPACE_KEY_PREFIX,
+  REDIS_WORKSPACE_EXPIRY,
+} from '../../../utils/redis';
 import {
   respondServerError,
   respondOk,
@@ -8,9 +12,6 @@ import {
   respondNotFound,
 } from '../../../utils/http-responses';
 import { isValidWorkspaceId } from '../../../../shared/utils';
-
-const REDIS_WORKSPACE_KEY = 'BLINK:WORKSPACE:';
-const WORKSPACE_EXPIRY = 10 * 60;
 
 export function createWorkpace(req, res) {
   const id = req.body.id;
@@ -25,7 +26,12 @@ export function createWorkpace(req, res) {
     .digest('hex');
 
   getRedisClient()
-    .set(`${REDIS_WORKSPACE_KEY}${key}`, id, 'EX', WORKSPACE_EXPIRY)
+    .set(
+      `${REDIS_WORKSPACE_KEY_PREFIX}${key}`,
+      id,
+      'EX',
+      REDIS_WORKSPACE_EXPIRY
+    )
     .then(() => respondOk(res, { id, key }))
     .catch(error => respondServerError(res, error.message));
 }
@@ -33,7 +39,7 @@ export function createWorkpace(req, res) {
 export function verifyWorkspaceKey(req, res) {
   const key = req.params.key;
   getRedisClient()
-    .get(`${REDIS_WORKSPACE_KEY}${key}`)
+    .get(`${REDIS_WORKSPACE_KEY_PREFIX}${key}`)
     .then(id => {
       if (id === null) {
         return respondNotFound(res, 'Workspace not found.');
@@ -47,7 +53,7 @@ export function verifyWorkspaceKey(req, res) {
 export function deleteWorkspaceKey(req, res) {
   const key = req.params.key;
   getRedisClient()
-    .del(`${REDIS_WORKSPACE_KEY}${key}`)
+    .del(`${REDIS_WORKSPACE_KEY_PREFIX}${key}`)
     .then(() => respondOk(res))
     .catch(error => respondServerError(res, error.message));
 }

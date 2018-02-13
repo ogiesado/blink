@@ -1,6 +1,6 @@
 import express from 'express';
 import helmet from 'helmet';
-import { connectToRedis } from './utils/redis';
+import { connectToRedis, prepareRedis } from './utils/redis';
 import {
   appPublicStorageDir,
   appServerViewsDir,
@@ -25,6 +25,8 @@ import logErrors from './middlewares/logErrors';
 export default (async function bootstrap(server) {
   try {
     const redis = await connectToRedis();
+
+    prepareRedis(redis);
 
     server.set('trust proxy', true);
     server.disable('x-powered-by');
