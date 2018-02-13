@@ -35,6 +35,6 @@ export async function verifyWorkspaceKey(key) {
   return get(`${API_VERSION}/workspaces/${key}`);
 }
 
-export async function exitWorkspaceKey(key) {
+export async function exitWorkspace(key) {
   return del(`${API_VERSION}/workspaces/${key}`);
 }
