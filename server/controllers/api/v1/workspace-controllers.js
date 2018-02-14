@@ -1,8 +1,4 @@
 import {
-  getRedisClient,
-  REDIS_WORKSPACE_KEY_PREFIX,
-} from '../../../utils/redis';
-import {
   respondServerError,
   respondOk,
   respondBadRequest,
