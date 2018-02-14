@@ -16,6 +16,7 @@ import configureRoutes from './configureRoutes';
 import handleNotFound from './middlewares/handleNotFound';
 import handleErrors from './middlewares/handleErrors';
 import logErrors from './middlewares/logErrors';
+import initRequest from './middlewares/initRequest';
 
 /**
  * Bootstraps the server
@@ -42,6 +43,8 @@ export default (async function bootstrap(server) {
 
     server.use('/assets', express.static(appClientBuildDir()));
     server.use('/files', express.static(appPublicStorageDir()));
+
+    server.use(initRequest);
 
     configureRoutes(server);
 
