@@ -21,3 +21,7 @@ export function createWorkspace(workspaceId) {
     )
     .then(() => ({ key, id: workspaceId }));
 }
+
+export function getWorkspaceId(workspaceKey) {
+  return getRedisClient().get(`${REDIS_WORKSPACE_KEY_PREFIX}${workspaceKey}`);
+}

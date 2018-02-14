@@ -9,7 +9,7 @@ import {
   respondNotFound,
 } from '../../../utils/http-responses';
 import { isValidWorkspaceId } from '../../../../shared/utils';
-import { createWorkspace } from '../../../services/workspace';
+import { createWorkspace, getWorkspaceId } from '../../../services/workspace';
 
 export function createWorkpaceController(req, res) {
   const id = req.body.id;
@@ -25,8 +25,7 @@ export function createWorkpaceController(req, res) {
 
 export function verifyWorkspaceKeyController(req, res) {
   const key = req.params.key;
-  getRedisClient()
-    .get(`${REDIS_WORKSPACE_KEY_PREFIX}${key}`)
+  getWorkspaceId(key)
     .then(id => {
       if (id === null) {
         return respondNotFound(res, 'Workspace not found.');
