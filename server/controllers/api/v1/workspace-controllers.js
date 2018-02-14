@@ -1,9 +1,6 @@
-import crypto from 'crypto';
-import env from '../../../utils/env';
 import {
   getRedisClient,
   REDIS_WORKSPACE_KEY_PREFIX,
-  REDIS_WORKSPACE_EXPIRY,
 } from '../../../utils/redis';
 import {
   respondServerError,
@@ -12,6 +9,7 @@ import {
   respondNotFound,
 } from '../../../utils/http-responses';
 import { isValidWorkspaceId } from '../../../../shared/utils';
+import { createWorkspace } from '../../../services/workspace';
 
 export function createWorkpaceController(req, res) {
   const id = req.body.id;
@@ -20,19 +18,8 @@ export function createWorkpaceController(req, res) {
     return respondBadRequest(res, 'Invalid workspace ID');
   }
 
-  const key = crypto
-    .createHmac('sha256', env('APP_KEY'))
-    .update(String(Date.now()))
-    .digest('hex');
-
-  getRedisClient()
-    .set(
-      `${REDIS_WORKSPACE_KEY_PREFIX}${key}`,
-      id,
-      'EX',
-      REDIS_WORKSPACE_EXPIRY
-    )
-    .then(() => respondOk(res, { id, key }))
+  createWorkspace(id)
+    .then(result => respondOk(res, result))
     .catch(error => respondServerError(res, error.message));
 }
 
