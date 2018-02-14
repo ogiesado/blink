@@ -9,7 +9,11 @@ import {
   respondNotFound,
 } from '../../../utils/http-responses';
 import { isValidWorkspaceId } from '../../../../shared/utils';
-import { createWorkspace, getWorkspaceId } from '../../../services/workspace';
+import {
+  createWorkspace,
+  getWorkspaceId,
+  deleteWorkspaceKey,
+} from '../../../services/workspace';
 
 export function createWorkpaceController(req, res) {
   const id = req.body.id;
@@ -37,9 +41,7 @@ export function verifyWorkspaceKeyController(req, res) {
 }
 
 export function deleteWorkspaceKeyController(req, res) {
-  const key = req.params.key;
-  getRedisClient()
-    .del(`${REDIS_WORKSPACE_KEY_PREFIX}${key}`)
+  deleteWorkspaceKey(req.params.key)
     .then(() => respondOk(res))
     .catch(error => respondServerError(res, error.message));
 }
