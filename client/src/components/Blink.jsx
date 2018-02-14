@@ -52,7 +52,7 @@ export default class Blink extends Component {
 
   logout = e => {
     e.preventDefault();
-    console.log('logout');
+
     if (!hasWorkspaceKey()) {
       return;
     }
@@ -60,6 +60,7 @@ export default class Blink extends Component {
     exitWorkspace(getWorkspaceKey())
       .then(() => {
         removeWorkspaceKey();
+        window.history.pushState({}, '', '/');
         window.location.reload(true);
       })
       .catch(error => {
