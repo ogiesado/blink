@@ -1,7 +1,14 @@
 import Redis from 'ioredis';
 import env from './env';
+import {
+  setUpdateStatus,
+  setUpdateDetails,
+  getUpdateDetails,
+  getUpdateStatus,
+} from '../services/updates';
 
 export const REDIS_UPDATE_DETAILS_KEY = 'BLINK:UPDATE:DETAILS';
+export const REDIS_UPDATE_STATUS_KEY = 'BLINK:UPDATE:STATUS';
 export const REDIS_WORKSPACE_KEY_PREFIX = 'BLINK:WORKSPACE:';
 export const REDIS_WORKSPACE_EXPIRY = 60 * 60;
 /**
@@ -57,16 +64,17 @@ export function getRedisClient() {
   return client;
 }
 
-export async function prepareRedis(redis) {
+export async function prepareRedis() {
   try {
-    const hasUpdateDetailsKey = await redis.exists(REDIS_UPDATE_DETAILS_KEY);
+    const updateDetails = await getUpdateDetails();
+    const updateStatus = await getUpdateStatus();
 
-    if (!hasUpdateDetailsKey) {
-      await redis.hmset(REDIS_UPDATE_DETAILS_KEY, {
-        lastUpdate: '-',
-        totalRecords: 0,
-        lastUpdateBy: '-',
-      });
+    if (updateDetails === null) {
+      await setUpdateDetails();
+    }
+
+    if (updateStatus === null) {
+      await setUpdateStatus();
     }
   } catch (error) {
     throw error;

@@ -34,7 +34,7 @@ const UpdateTable = ({ lastUpdate, lastUpdateBy, totalRecords }) => (
 UpdateTable.propTypes = {
   lastUpdate: PropTypes.string,
   lastUpdateBy: PropTypes.string,
-  totalRecords: PropTypes.string,
+  totalRecords: PropTypes.number,
 };
 
 export default UpdateTable;

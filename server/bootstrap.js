@@ -26,7 +26,7 @@ export default (async function bootstrap(server) {
   try {
     const redis = await connectToRedis();
 
-    prepareRedis(redis);
+    await prepareRedis();
 
     server.set('trust proxy', true);
     server.disable('x-powered-by');

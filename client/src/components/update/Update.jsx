@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Icon, Button } from 'semantic-ui-react';
 import Page from '../shared/Page.jsx';
 import PageHeader from '../shared/PageHeader.jsx';
-import UpdateProgress from './UpdateProgress.jsx';
+import Updater from './Updater.jsx';
 import Loading from '../Loading.jsx';
 import UpdateTable from './UpdateTable.jsx';
 import { getUpdateDetails } from '../../services/updates';
@@ -49,11 +48,7 @@ export default class Update extends Component {
         ) : (
           <div>
             <UpdateTable {...updateDetails} />
-            <Button primary icon labelPosition="right" disabled>
-              Updating...
-              <Icon name="upload" />
-            </Button>
-            <UpdateProgress />
+            <Updater />
           </div>
         )}
       </Page>

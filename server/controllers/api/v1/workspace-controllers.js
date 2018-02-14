@@ -13,7 +13,7 @@ import {
 } from '../../../utils/http-responses';
 import { isValidWorkspaceId } from '../../../../shared/utils';
 
-export function createWorkpace(req, res) {
+export function createWorkpaceController(req, res) {
   const id = req.body.id;
 
   if (!isValidWorkspaceId(id)) {
@@ -36,7 +36,7 @@ export function createWorkpace(req, res) {
     .catch(error => respondServerError(res, error.message));
 }
 
-export function verifyWorkspaceKey(req, res) {
+export function verifyWorkspaceKeyController(req, res) {
   const key = req.params.key;
   getRedisClient()
     .get(`${REDIS_WORKSPACE_KEY_PREFIX}${key}`)
@@ -50,7 +50,7 @@ export function verifyWorkspaceKey(req, res) {
     .catch(error => respondServerError(res, error.message));
 }
 
-export function deleteWorkspaceKey(req, res) {
+export function deleteWorkspaceKeyController(req, res) {
   const key = req.params.key;
   getRedisClient()
     .del(`${REDIS_WORKSPACE_KEY_PREFIX}${key}`)

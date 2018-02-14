@@ -1,17 +1,23 @@
 import { Router } from 'express';
 import {
-  createWorkpace,
-  verifyWorkspaceKey,
-  deleteWorkspaceKey,
-} from './workspaces';
-import { getUpdateDetails } from './updates';
+  createWorkpaceController,
+  verifyWorkspaceKeyController,
+  deleteWorkspaceKeyController,
+} from './workspace-controllers';
+import {
+  getUpdateDetailsController,
+  getUpdateStatusController,
+  startUpdateController,
+} from './update-controllers';
 
 const api = Router();
 
-api.post('/workspaces', createWorkpace);
-api.get('/workspaces/:key', verifyWorkspaceKey);
-api.delete('/workspaces/:key', deleteWorkspaceKey);
+api.post('/workspaces', createWorkpaceController);
+api.get('/workspaces/:key', verifyWorkspaceKeyController);
+api.delete('/workspaces/:key', deleteWorkspaceKeyController);
 
-api.get('/updates', getUpdateDetails);
+api.get('/updates', getUpdateDetailsController);
+api.post('/updates', startUpdateController);
+api.get('/updates/status', getUpdateStatusController);
 
 export default api;

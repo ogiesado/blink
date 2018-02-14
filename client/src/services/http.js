@@ -5,7 +5,7 @@ import { hasWorkspaceKey, getWorkspaceKey } from './workspace';
  * @param {Headers} [headers] Optional headers obejct
  * @return {Headers} The configured headers oject
  */
-function configureHeaders(headers = new window.Headers()) {
+function configureHeaders(headers = new Headers()) {
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
   if (hasWorkspaceKey()) {
