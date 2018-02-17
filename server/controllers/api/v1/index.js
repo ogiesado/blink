@@ -18,7 +18,7 @@ api.get('/workspaces/:key', verifyWorkspaceKeyController);
 api.delete('/workspaces/:key', deleteWorkspaceKeyController);
 
 api.get('/updates', requiresWorkspace, getUpdateDetailsController);
-api.post('/updates', startUpdateController);
-api.get('/updates/status', getUpdateStatusController);
+api.post('/updates', requiresWorkspace, startUpdateController);
+api.get('/updates/status', requiresWorkspace, getUpdateStatusController);
 
 export default api;

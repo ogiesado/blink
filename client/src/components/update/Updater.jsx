@@ -61,6 +61,10 @@ export default class Updater extends Component {
     this.checkUpdateStatus();
   }
 
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   render() {
     const { disabled, text } = this.state;
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Hope is not a strategy. A solid plan is.";
+echo "Hope is not a strategy; a solid plan is.";
 
 NPM_ENV=""
 

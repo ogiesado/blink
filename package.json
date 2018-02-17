@@ -28,6 +28,7 @@
     "babel-preset-stage-3": "^6.24.1",
     "body-parser": "^1.18.2",
     "clean-webpack-plugin": "^0.1.18",
+    "content-disposition": "^0.5.2",
     "css-loader": "^0.28.9",
     "ejs": "^2.5.7",
     "eslint": "^4.17.0",
@@ -40,6 +41,7 @@
     "file-loader": "^1.1.6",
     "helmet": "^3.10.0",
     "ioredis": "^3.2.2",
+    "moment": "^2.20.1",
     "node-sass": "^4.7.2",
     "pm2": "^2.9.3",
     "postcss-loader": "^2.1.0",
@@ -48,12 +50,15 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
+    "request": "^2.83.0",
     "sass-loader": "^6.0.6",
     "semantic-ui-react": "^0.78.2",
     "stylelint": "^8.4.0",
     "stylelint-config-standard": "^18.0.0",
     "stylelint-webpack-plugin": "^0.10.1",
+    "unzipper": "^0.8.11",
     "url-loader": "^0.6.2",
-    "webpack": "^3.10.0"
+    "webpack": "^3.10.0",
+    "xml-stream": "^0.4.5"
   }
 }

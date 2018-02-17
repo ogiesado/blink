@@ -1,4 +1,5 @@
 import { getWorkspaceId } from '../services/workspace';
+import { respondServerError } from '../utils/http-responses';
 
 export default function initRequest(req, res, next) {
   const workspaceKey = req.get('Blink-Workspace-Key');
@@ -10,6 +11,7 @@ export default function initRequest(req, res, next) {
       next();
     })
     .catch(error => {
+      respondServerError(res);
       throw error;
     });
 }

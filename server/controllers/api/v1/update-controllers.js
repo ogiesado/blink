@@ -18,7 +18,7 @@ export function getUpdateStatusController(req, res) {
 }
 
 export function startUpdateController(req, res) {
-  const workspace = req.local.workspace;
+  const workspace = res.locals.workspaceId;
 
   startUpdate({ workspace })
     .then(updateStatus => respondOk(res, updateStatus))
