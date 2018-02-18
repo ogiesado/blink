@@ -38,7 +38,7 @@ export function getUpdateStatus() {
 export function setUpdateStatus({
   isUpdating = false,
   hasError = false,
-  messages = [],
+  message = '',
   startedBy = '',
   meta = {
     xml: '',
@@ -54,7 +54,7 @@ export function setUpdateStatus({
     JSON.stringify({
       isUpdating,
       hasError,
-      messages,
+      message,
       startedBy,
       meta,
     })
@@ -64,12 +64,13 @@ export function setUpdateStatus({
 export async function startUpdate({ workspace }) {
   try {
     const lastUpdateDetails = await getUpdateDetails();
-    const updateStatus = await getUpdateStatus();
+    let updateStatus = await getUpdateStatus();
     if (updateStatus.isUpdating) {
       return updateStatus;
     }
 
     await setUpdateStatus(); //reset
+    updateStatus = await getUpdateStatus();
 
     updateStatus.isUpdating = true;
     updateStatus.startedBy = workspace;
@@ -80,7 +81,7 @@ export async function startUpdate({ workspace }) {
     let zipFilename = '';
     let xmlFilename = '';
 
-    updateStatus.messages.push('Starting GLEIF file stream.');
+    updateStatus.message = 'Starting GLEIF file stream.';
     await setUpdateStatus(updateStatus);
 
     const downloadingStream = request.get(downloadUrl);
@@ -89,7 +90,7 @@ export async function startUpdate({ workspace }) {
       if (updateStatus.isUpdating) {
         updateStatus.isUpdating = false;
         updateStatus.hasError = true;
-        updateStatus.messages.push(error.message);
+        updateStatus.message = error.message;
 
         setUpdateStatus(updateStatus);
       }
@@ -99,9 +100,9 @@ export async function startUpdate({ workspace }) {
       if (response.statusCode !== 200 && updateStatus.isUpdating) {
         updateStatus.isUpdating = false;
         updateStatus.hasError = true;
-        updateStatus.messages.push(
-          `Could not stream GLEIF file [${response.statusCode}]`
-        );
+        updateStatus.message = `Could not stream GLEIF file [${
+          response.statusCode
+        }]`;
 
         setUpdateStatus(updateStatus);
 
@@ -123,9 +124,7 @@ export async function startUpdate({ workspace }) {
       ) {
         updateStatus.isUpdating = false;
         updateStatus.hasError = true;
-        updateStatus.messages.push(
-          `Already up to date with current GLEIF file ${zipFilename}`
-        );
+        updateStatus.message = `Already up to date with current GLEIF file ${zipFilename}`;
 
         setUpdateStatus(updateStatus);
 
@@ -140,7 +139,7 @@ export async function startUpdate({ workspace }) {
         objectMode: true,
         transform(entry, encoding, done) {
           if (entry.path === xmlFilename && updateStatus.isUpdating) {
-            updateStatus.messages.push('Unzipping GLEIF file stream.');
+            updateStatus.message = 'Unzipping GLEIF file stream.';
             setUpdateStatus(updateStatus);
 
             entry
@@ -168,13 +167,12 @@ export async function startUpdate({ workspace }) {
         return;
       }
 
-      updateStatus.messages.push('Reading GLEIF file headers');
+      updateStatus.message = 'Reading GLEIF file headers';
       updateStatus.meta.xml = xmlFilename;
       updateStatus.meta.zip = zipFilename;
       updateStatus.meta.date = item['lei:ContentDate'];
       updateStatus.meta.description = item['lei:FileContent'];
       updateStatus.meta.records = Number(item['lei:RecordCount']);
-      updateStatus.messages.push('Completed GLEIF file headers reading');
 
       setUpdateStatus(updateStatus);
     });
@@ -187,7 +185,7 @@ export async function startUpdate({ workspace }) {
       }
 
       if (updateStatus.meta.saved === 0) {
-        updateStatus.messages.push('Updating GLEIF records');
+        updateStatus.message = 'Updating GLEIF records';
         setUpdateStatus(updateStatus);
       }
 
@@ -197,26 +195,20 @@ export async function startUpdate({ workspace }) {
             updateStatus.meta.saved++;
 
             if (updateStatus.meta.saved === updateStatus.meta.records) {
-              updateStatus.messages.push(
-                `${updateStatus.meta.saved} records updated successfully.`
-              );
+              updateStatus.message = `${
+                updateStatus.meta.saved
+              } records updated successfully.`;
               updateStatus.isUpdating = false;
               setUpdateDetails({
                 lastUpdate: updateStatus.meta.date,
                 totalRecords: updateStatus.meta.records,
                 lastUpdateBy: updateStatus.startedBy,
-                gleifFilename: updateStatus.meta.xmlFilename,
+                gleifFilename: updateStatus.meta.zip,
               });
             } else {
-              if (updateStatus.meta.saved > 1) {
-                updateStatus.messages.pop();
-              }
-
-              updateStatus.messages.push(
-                `${updateStatus.meta.saved}/${
-                  updateStatus.meta.records
-                } records updated successfully`
-              );
+              updateStatus.message = `${updateStatus.meta.saved}/${
+                updateStatus.meta.records
+              } records updated successfully`;
             }
 
             setUpdateStatus(updateStatus);
@@ -225,7 +217,8 @@ export async function startUpdate({ workspace }) {
         .catch(error => {
           updateStatus.isUpdating = false;
           updateStatus.hasError = true;
-          updateStatus.messages.push(error.message);
+          updateStatus.message = error.message;
+          throw error;
         });
     });
 
@@ -238,7 +231,7 @@ export async function startUpdate({ workspace }) {
 }
 
 export async function upsertEntity(entity) {
-  console.log(entity);
+  // console.log(entity);
 
   return entity;
 }

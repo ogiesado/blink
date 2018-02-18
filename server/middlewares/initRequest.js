@@ -8,7 +8,7 @@ export default function initRequest(req, res, next) {
       res.locals.workspaceId = workspaceId;
       res.locals.workspaceKey = workspaceKey;
 
-      next();
+      return next();
     })
     .catch(error => {
       respondServerError(res);
