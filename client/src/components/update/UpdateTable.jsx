@@ -1,4 +1,5 @@
 import React from 'react';
+import { format } from 'date-fns';
 import PropTypes from 'prop-types';
 import { Table } from 'semantic-ui-react';
 
@@ -8,7 +9,7 @@ const UpdateTable = ({ lastUpdate, lastUpdateBy, totalRecords }) => (
       <Table.Row>
         <Table.Cell className="b-update__status-label">Last Update</Table.Cell>
         <Table.Cell className="b-primary" textAlign="right">
-          {lastUpdate}
+          {format(lastUpdate, 'hh:mm a - ddd MMM Mo, YYYY')}
         </Table.Cell>
       </Table.Row>
       <Table.Row>
@@ -24,7 +25,7 @@ const UpdateTable = ({ lastUpdate, lastUpdateBy, totalRecords }) => (
           Last Update By
         </Table.Cell>
         <Table.Cell className="b-primary" textAlign="right">
-          {lastUpdateBy}
+          {lastUpdateBy.toLocaleString()}
         </Table.Cell>
       </Table.Row>
     </Table.Body>

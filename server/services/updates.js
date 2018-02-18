@@ -189,7 +189,7 @@ export async function startUpdate({ workspace }) {
         setUpdateStatus(updateStatus);
       }
 
-      upsertEntity(transformEntityFromGleif(item))
+      upsertEntity(transformEntityFromGleifFormat(item))
         .then(() => {
           if (updateStatus.isUpdating) {
             updateStatus.meta.saved++;
@@ -236,7 +236,7 @@ export async function upsertEntity(entity) {
   return entity;
 }
 
-export function transformEntityFromGleif(gleifEntity) {
+export function transformEntityFromGleifFormat(gleifEntity) {
   const ge = gleifEntity['lei:Entity'];
 
   return {

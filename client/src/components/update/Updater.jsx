@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
-import UpdateProgress from './UpdateProgress.jsx';
 import { checkUpdateStatus, startUpdate } from '../../services/updates';
+import './Updater.scss';
 
 export default class Updater extends Component {
   constructor(props) {
@@ -32,6 +32,8 @@ export default class Updater extends Component {
       clearInterval(this.interval);
       this.interval = null;
     }
+
+    return isUpdating;
   };
 
   handleUpdateStatusError = error => {
@@ -58,7 +60,11 @@ export default class Updater extends Component {
 
   componentDidMount() {
     this.setState({ text: 'Checking...' });
-    this.checkUpdateStatus();
+    this.checkUpdateStatus().then(isUpdating => {
+      if (!isUpdating) {
+        this.setState({ message: '', hasError: false });
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -66,10 +72,10 @@ export default class Updater extends Component {
   }
 
   render() {
-    const { disabled, text } = this.state;
+    const { disabled, text, message, hasError } = this.state;
 
     return (
-      <div>
+      <div className="b-updater">
         <Button
           primary
           icon
@@ -78,12 +84,15 @@ export default class Updater extends Component {
           onClick={this.startUpdate}
         >
           {text}
-          <Icon
-            name={disabled ? 'refresh' : 'upload'}
-            className={disabled ? 'loading' : ''}
-          />
+          <Icon name="refresh" className={disabled ? 'loading' : ''} />
         </Button>
-        <UpdateProgress />
+        <p
+          className={`b-updater__status ${
+            hasError ? 'b-updater__status--error' : ''
+          }`}
+        >
+          {message}
+        </p>
       </div>
     );
   }
