@@ -32,6 +32,7 @@
     "css-loader": "^0.28.9",
     "date-fns": "^1.29.0",
     "ejs": "^2.5.7",
+    "elasticsearch": "^14.1.0",
     "eslint": "^4.17.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-loader": "^1.9.0",

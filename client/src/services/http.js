@@ -31,6 +31,10 @@ export async function get(url, options = {}) {
       return data;
     }
 
+    if (response.status === 200) {
+      window.location.reload(true);
+    }
+
     throw new Error(data.message);
   } catch (e) {
     throw e;
@@ -54,6 +58,10 @@ export async function post(url, data = null, options = {}) {
 
     if (response.ok) {
       return data;
+    }
+
+    if (response.status === 200) {
+      window.location.reload(true);
     }
 
     throw new Error(data.message);
