@@ -1,6 +1,14 @@
 #!/bin/bash
+#SCRIPT TO PROVSION THE DOCKER HOST SERVER
 
 apt-get update && apt-get upgrade -y
+
+#INSTALL GIT
+apt-get install -y git
+
+git config --global user.name "Ogie Sado"
+
+git config --global user.email "sado.ogie@gmail.com"
 
 #INSTALL DOCKER
 
@@ -43,3 +51,6 @@ export NVM_DIR="$HOME/.nvm"
 #INSTALL NODE
 nvm install v9.4.0
 nvm use 9.4.0
+
+#SET vm.max_map_count FOR ELASTIC SEARCH CONTAINER. USE sysctl vm.max_map_count to confirm
+sysctl -w vm.max_map_count=262144

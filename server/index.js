@@ -1,7 +1,11 @@
-const server = require('express')();
+import makeServer from './makeServer';
+import env from './utils/env';
 
-server.get('/', (req, res) => {
-    res.send('Here we go yep yep! ' + process.env.NODE_ENV);
-});
-
-module.exports = server;
+makeServer()
+  .then(server => {
+    const port = env('NODE_PORT');
+    server.listen(port, () => console.log(`We are listening on port ${port}!`));
+  })
+  .catch(error => {
+    throw error;
+  });

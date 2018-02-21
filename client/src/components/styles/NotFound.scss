@@ -1,0 +1,9 @@
+.b-not-found {
+  display: flex;
+  flex-direction: column;
+  padding-top: 100px;
+
+  &__actions {
+    text-align: center;
+  }
+}

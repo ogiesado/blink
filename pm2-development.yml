@@ -1,0 +1,7 @@
+apps:
+  - script   : ./index.js
+    name     : 'blink'
+    instances: 1
+    exec_mode: fork
+    watch  : ['server']
+    # ignore_watch: ['node_modules', '.git', 'storage']

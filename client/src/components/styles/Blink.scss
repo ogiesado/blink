@@ -1,0 +1,15 @@
+.b-app {
+  padding: 10px 0;
+  max-width: 1000px;
+  margin: 0 auto;
+
+  @media (max-width: 1000px) {
+    max-width: 95%;
+  }
+
+  &__main {
+    min-height: 85vh;
+    margin: 15px 0 !important;
+  }
+}
+

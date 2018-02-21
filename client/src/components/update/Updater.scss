@@ -1,0 +1,11 @@
+.b-updater {
+  &__status {
+    color: #423f3f;
+    font-size: 12px;
+    padding: 10px 0;
+
+    &--error {
+      color: #9e0909;
+    }
+  }
+}

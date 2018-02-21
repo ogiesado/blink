@@ -1,0 +1,16 @@
+.b-login {
+  &__header {
+    text-align: center;
+  }
+
+  &__content {
+    display: flex;
+    max-width: 550px;
+    margin: 0 auto;
+  }
+
+  &__actions {
+    text-align: center !important;
+    min-height: 65px;
+  }
+}
