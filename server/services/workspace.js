@@ -6,14 +6,12 @@ import {
   REDIS_WORKSPACE_EXPIRY,
   setRedisKey,
   setRedisExpire,
+  getRedisKey,
 } from '../utils/redis';
+import hash from '../utils/hash';
 
 export async function createWorkspace(workspaceId) {
-  const key = crypto
-    .createHmac('sha256', env('APP_KEY'))
-    .update(String(Date.now()))
-    .digest('hex');
-
+  const key = hash(String(Date.now()));
   try {
     await setRedisKey(
       `${REDIS_WORKSPACE_KEY_PREFIX}${key}`,
@@ -25,19 +23,10 @@ export async function createWorkspace(workspaceId) {
   } catch (error) {
     throw error;
   }
-
-  // return getRedisClient()
-  //   .set(
-  //     `${REDIS_WORKSPACE_KEY_PREFIX}${key}`,
-  //     workspaceId,
-  //     'EX',
-  //     REDIS_WORKSPACE_EXPIRY
-  //   )
-  //   .then(() => ({ key, id: workspaceId }));
 }
 
 export function getWorkspaceId(workspaceKey = '') {
-  return getRedisClient().get(`${REDIS_WORKSPACE_KEY_PREFIX}${workspaceKey}`);
+  return getRedisKey(`${REDIS_WORKSPACE_KEY_PREFIX}${workspaceKey}`);
 }
 
 export function deleteWorkspaceKey(workspaceKey) {

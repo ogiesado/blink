@@ -104,6 +104,10 @@ export async function setRedisKey(key, value, expiry) {
   }
 }
 
+export function getRedisKey(key) {
+  return getRedisClient().get(key);
+}
+
 export async function setRedisExpire(key, seconds) {
   try {
     const result = await getRedisClient().expire(key, seconds);
