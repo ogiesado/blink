@@ -57,7 +57,7 @@ export default class Updater extends Component {
       return;
     }
 
-    this.setState({ disabled: true, text: 'Starting...' });
+    this.setState({ disabled: true, text: 'Starting...', message: '' });
 
     startUpdate()
       .then(this.handleUpdateStatus)
