@@ -17,6 +17,7 @@ import handleNotFound from './middlewares/handleNotFound';
 import handleErrors from './middlewares/handleErrors';
 import logErrors from './middlewares/logErrors';
 import initRequest from './middlewares/initRequest';
+import { connectToElastic, prepareElastic } from './utils/elastic';
 
 /**
  * Bootstraps the server
@@ -28,6 +29,10 @@ export default (async function bootstrap(server) {
     const redis = await connectToRedis();
 
     await prepareRedis();
+
+    const elastic = await connectToElastic();
+
+    await prepareElastic();
 
     server.set('trust proxy', true);
     server.disable('x-powered-by');
@@ -55,12 +60,14 @@ export default (async function bootstrap(server) {
     process.on('SIGINT', function() {
       try {
         redis.disconnect();
+        elastic.close();
         process.exit(0);
       } catch (error) {
         process.exit(1);
       }
     });
   } catch (error) {
-    throw error;
+    console.trace(error);
+    process.exit(1);
   }
 });

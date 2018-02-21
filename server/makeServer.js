@@ -10,9 +10,8 @@ export default async function makeServer() {
 
   try {
     await bootstrap(server);
+    return server;
   } catch (error) {
     throw error;
   }
-
-  return server;
 }

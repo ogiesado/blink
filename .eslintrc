@@ -36,6 +36,7 @@
       }
     ],
     "no-console": "warn",
-    "valid-jsdoc": "error"
+    "valid-jsdoc": "error",
+    "require-await": "warn"
   }
 }

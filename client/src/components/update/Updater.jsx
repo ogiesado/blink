@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Icon } from 'semantic-ui-react';
 import { checkUpdateStatus, startUpdate } from '../../services/updates';
 import './Updater.scss';
 
 export default class Updater extends Component {
+  static propTypes = {
+    updateDone: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
 
@@ -31,6 +36,7 @@ export default class Updater extends Component {
     if (!isUpdating && this.interval !== null) {
       clearInterval(this.interval);
       this.interval = null;
+      this.props.updateDone();
     }
 
     return isUpdating;

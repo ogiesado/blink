@@ -31,7 +31,7 @@ export async function get(url, options = {}) {
       return data;
     }
 
-    if (response.status === 200) {
+    if (response.status === 401) {
       window.location.reload(true);
     }
 
@@ -60,7 +60,7 @@ export async function post(url, data = null, options = {}) {
       return data;
     }
 
-    if (response.status === 200) {
+    if (response.status === 401) {
       window.location.reload(true);
     }
 

@@ -3,7 +3,7 @@ import { respondServerError } from '../utils/http-responses';
 
 export default function initRequest(req, res, next) {
   const workspaceKey = req.get('Blink-Workspace-Key');
-  getWorkspaceId(workspaceKey)
+  return getWorkspaceId(workspaceKey)
     .then(workspaceId => {
       res.locals.workspaceId = workspaceId;
       res.locals.workspaceKey = workspaceKey;
@@ -11,7 +11,7 @@ export default function initRequest(req, res, next) {
       return next();
     })
     .catch(error => {
-      respondServerError(res);
-      throw error;
+      console.trace(error);
+      return respondServerError(res);
     });
 }

@@ -10,6 +10,7 @@ import {
   REDIS_UPDATE_STATUS_KEY,
 } from '../utils/redis';
 import env from '../utils/env';
+import { upsertEntity, transformEntityFromGleifFormat } from './entities';
 
 export function getUpdateDetails() {
   return getRedisClient()
@@ -128,6 +129,8 @@ export async function startUpdate({ workspace }) {
 
         setUpdateStatus(updateStatus);
 
+        downloadingStream.destroy();
+
         return;
       }
     });
@@ -228,25 +231,4 @@ export async function startUpdate({ workspace }) {
 
     throw error;
   }
-}
-
-export async function upsertEntity(entity) {
-  // console.log(entity);
-
-  return entity;
-}
-
-export function transformEntityFromGleifFormat(gleifEntity) {
-  const ge = gleifEntity['lei:Entity'];
-
-  return {
-    lei: gleifEntity['lei:LEI'],
-    name: ge['lei:LegalName']['$text'],
-    addressLineOne: ge['lei:LegalAddress']['lei:FirstAddressLine'],
-    addressLineTwo: ge['lei:LegalAddress']['lei:AdditionalAddressLine'],
-    city: ge['lei:LegalAddress']['lei:City'],
-    region: ge['lei:LegalAddress']['lei:Region'],
-    country: ge['lei:LegalAddress']['lei:Country'],
-    postCode: ge['lei:LegalAddress']['lei:PostalCode'],
-  };
 }

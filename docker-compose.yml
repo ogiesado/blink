@@ -9,6 +9,7 @@ services:
     env_file: .env
     depends_on: 
       - redis
+      - elasticsearch
     labels:
       blink.maintainer: ${APP_MAINTAINER}
       blink.description: ${APP_DESCRIPTION}
@@ -31,6 +32,11 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    logging:
+      driver: ${NODE_LOG_DRIVER}
+      options:
+        max-size: ${NODE_LOG_MAX_SIZE}
+        max-file: ${NODE_LOG_MAX_FILES}
 
   nginx:
     container_name: ${APP_NAME}_nginx

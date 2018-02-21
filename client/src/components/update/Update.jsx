@@ -22,12 +22,18 @@ export default class Update extends Component {
 
   hideLoading = () => this.setState({ loading: false });
 
-  componentDidMount() {
+  updateDone = () => this.load();
+
+  load = () => {
     getUpdateDetails()
       .then(updateDetails => {
         this.setState({ updateDetails, loading: false, error: null });
       })
       .catch(error => this.setState({ error: error.message, loading: false }));
+  };
+
+  componentDidMount() {
+    this.load();
   }
 
   render() {
@@ -48,7 +54,7 @@ export default class Update extends Component {
         ) : (
           <div>
             <UpdateTable {...updateDetails} />
-            <Updater />
+            <Updater updateDone={this.updateDone} />
           </div>
         )}
       </Page>
