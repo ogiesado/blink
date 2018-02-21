@@ -22,7 +22,7 @@ let client = null;
  * @param {Object} options Options for the redis client
  * @return {Promise} A promise that resolve with the redis client
  */
-export async function connectToRedis({
+export function connectToRedis({
   host = env('REDIS_HOST'),
   port = env('REDIS_PORT'),
   ...rest
@@ -76,6 +76,49 @@ export async function prepareRedis() {
     if (updateStatus === null) {
       await setUpdateStatus();
     }
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ * Sets a redis key
+ * @param {String} key The key to store the value
+ * @param {String} value The value for the key
+ * @param {Number} [expiry] Optional expiry in seconds
+ * @return {Promise} The promise
+ */
+export async function setRedisKey(key, value, expiry) {
+  const args = [key, value];
+  if (expiry) {
+    args.push('EX');
+    args.push(expiry);
+  }
+
+  try {
+    const result = await getRedisClient().set(...args);
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function setRedisExpire(key, seconds) {
+  try {
+    const result = await getRedisClient().expire(key, seconds);
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getRedisExpire(key) {
+  try {
+    const result = await getRedisClient().ttl(key);
+
+    return result;
   } catch (error) {
     throw error;
   }
